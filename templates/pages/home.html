@@ -1,0 +1,43 @@
+{% extends 'base.html'%}
+
+{% block title%}
+    Tweet
+{% endblock title%}
+
+{% block content%}
+    <h1>Hello Again!!!</h1>
+    <div class="tweets">
+        Loading...
+    </div>
+    
+    <script>
+        const likeBtn = (tweet) => `<button class='' 
+            onClick=handleDidLike(${tweet.id},${tweet.likes})>${tweet.likes} Like</button>`;
+
+        const handleDidLike = (tweet_id, currentCount) => {console.log(tweet_id, currentCount)};
+
+        const formatTweetElement = tweet => `<div id='${tweet.id}'>
+            <p>${tweet.content}</p>
+            <div> ${likeBtn(tweet)}</div>
+            </div>`;
+
+        const tweetsElement = document.querySelector('.tweets');
+
+        const xhr = new XMLHttpRequest();
+        const method = 'GET';
+        const url = "/tweets";
+        const responseType = "json";
+
+        xhr.responseType = responseType;
+        xhr.open(method, url);
+        xhr.onload = () => {
+            let serverResponse = xhr.response;
+            let listedItems = serverResponse.response;
+            console.log(listedItems);
+            let listContent = ``;
+            listedItems.forEach(item => listContent += formatTweetElement(item));
+            tweetsElement.innerHTML = listContent;
+        }
+        xhr.send();
+    </script>
+{% endblock content%}
