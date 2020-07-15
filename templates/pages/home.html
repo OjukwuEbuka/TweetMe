@@ -5,23 +5,40 @@
 {% endblock title%}
 
 {% block content%}
-    <h1>Hello Again!!!</h1>
-    <div class="tweets">
+
+    <div class="row text-center">
+        <div class="col">
+            <h2>Welcome To TweetMe 2</h2>
+        </div>
+    </div>
+
+    <div class="row mb-2">
+        <div class="col-md-4 mx-auto col-10 text-center">
+            <form action="/create-tweet" method="post" class="form">
+                {% csrf_token %}
+                <input type="hidden" value="/" name="next">
+                <textarea name="content" id="" class="form-control mb-2" placeholder="Your tweet..."></textarea>
+                <button class="btn btn-primary">Tweet</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="row" id="tweets">
         Loading...
     </div>
     
     <script>
-        const likeBtn = (tweet) => `<button class='' 
+        const likeBtn = (tweet) => `<button class='btn btn-primary' 
             onClick=handleDidLike(${tweet.id},${tweet.likes})>${tweet.likes} Like</button>`;
 
         const handleDidLike = (tweet_id, currentCount) => {console.log(tweet_id, currentCount)};
 
-        const formatTweetElement = tweet => `<div id='${tweet.id}'>
+        const formatTweetElement = tweet => `<div class="col-12 col-md-10 mx-auto border rounded py-3 mb-4" id='${tweet.id}'>
             <p>${tweet.content}</p>
             <div> ${likeBtn(tweet)}</div>
             </div>`;
 
-        const tweetsElement = document.querySelector('.tweets');
+        const tweetsElement = document.querySelector('#tweets');
 
         const xhr = new XMLHttpRequest();
         const method = 'GET';
